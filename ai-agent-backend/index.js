@@ -1,49 +1,44 @@
 const express = require('express');
-const cors = require('cors');
-const axios = require('axios');
-
-// Initialize the Express application
+const multer = require('multer');
 const app = express();
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
-// Define the port for the server
-const port = 3001;
+app.use(cors());
 
-// Apply middleware
-app.use(cors());      // Enables Cross-Origin Resource Sharing
-app.use(express.json()); // Parses incoming JSON requests
+const upload = multer({ dest: 'uploads/' });
 
-// Define the main API endpoint for the chat
-app.post('/chat', async (req, res) => {
-  // Get the user's message from the request body
-  const userMessage = req.body.message;
-
-  // Check if a message was provided
-  if (!userMessage) {
-    return res.status(400).json({ reply: "Error: A 'message' field is required." });
-  }
-
+app.post('/upload', upload.single('file'), async (req, res) => {
   try {
-    // Send the request to the local Ollama server
-    const ollamaResponse = await axios.post('http://localhost:11434/api/generate', {
-      model: "llama3",
-      prompt: userMessage,
-      stream: false
-    });
+    const file = req.file;
 
-    // Extract the AI's reply from the Ollama response
-    const aiReply = ollamaResponse.data.response;
+    if (!file) {
+      return res.status(400).json({ reply: 'No file uploaded' });
+    }
 
-    // Send the AI's reply back to the frontend
-    res.json({ reply: aiReply });
+    // Example: basic file type detection & reply
+    const ext = path.extname(file.originalname).toLowerCase();
 
+    let reply = '';
+    if (ext === '.txt') {
+      const content = fs.readFileSync(file.path, 'utf-8');
+      // Process file content here with AI (or dummy response)
+      reply = `Received a text file. Content preview: ${content.slice(0, 200)}...`;
+    } else if (ext === '.png' || ext === '.jpg' || ext === '.jpeg') {
+      reply = 'Received an image file. (You can add OCR/image AI processing here)';
+    } else {
+      reply = `Received a ${ext} file. (Unsupported preview, but file accepted.)`;
+    }
+
+    // Cleanup uploaded file (optional)
+    fs.unlinkSync(file.path);
+
+    res.json({ reply });
   } catch (error) {
-    // Log the error and send a generic error message
-    console.error("Error communicating with Ollama:", error.message);
-    res.status(500).json({ reply: "Error: Could not get a response from the AI engine." });
+    console.error('Upload error:', error);
+    res.status(500).json({ reply: 'Error processing file.' });
   }
 });
 
-// Start the server and listen for incoming requests
-app.listen(port, () => {
-  console.log(`✅ Server is running successfully at http://localhost:${port}`);
-});
+app.listen(3001, () => console.log('Server running on port 3001'));
