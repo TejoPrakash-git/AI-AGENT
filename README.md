@@ -114,4 +114,4 @@ AI-AGENT/
 
 - Uses Electron preload scripts for secure IPC (Inter-Process Communication)
 - All automation tasks are controlled only through explicit AI-interpreted prompts
-- Restricted system command execution
+- Restricted system command execution.
