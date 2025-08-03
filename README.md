@@ -1,4 +1,4 @@
-np# 🧠 AI Desktop Agent
+🧠 AI Desktop Agent
 
 A fully functional voice & task-oriented assistant that operates as both a desktop and web automation tool. Powered by natural language understanding, it can accept user commands through text or speech, interpret intent using AI models, and take real-world actions.
 
