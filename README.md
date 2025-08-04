@@ -30,21 +30,37 @@ A fully functional voice & task-oriented assistant that operates as both a deskt
 ```
 AI-AGENT/
 │
+├── README.md                     # Main project documentation
+├── requirements.txt              # Project requirements
+│
 ├── ai-agent-app/                 # Frontend: Electron + React
-│   ├── public/                   # Static assets
-│   ├── src/                      # React source code
-│   │   ├── components/           # React components
-│   │   ├── App.jsx               # Main application component
-│   │   └── main.jsx              # React entry point
+│   ├── .gitignore                # Git ignore file
+│   ├── README.md                 # Frontend documentation
+│   ├── eslint.config.js          # ESLint configuration
+│   ├── index.html                # HTML entry point
 │   ├── main.js                   # Electron main process
+│   ├── package.json              # Frontend dependencies
+│   ├── package-lock.json         # Dependency lock file
 │   ├── preload.js                # Secure Electron-Renderer bridge
-│   └── package.json              # Frontend dependencies
+│   ├── vite.config.js            # Vite configuration
+│   ├── public/                   # Static assets
+│   │   └── vite.svg              # Vite logo
+│   └── src/                      # React source code
+│       ├── App.css               # App styles
+│       ├── App.jsx               # Main application component
+│       ├── index.css             # Global styles
+│       ├── main.jsx              # React entry point
+│       ├── assets/               # Static assets
+│       └── components/           # React components
 │
 └── ai-agent-backend/            # Backend: Node.js + Express + Puppeteer
+    ├── .env                      # Environment variables
+    ├── index.js                  # Express server + AI integration
+    ├── package.json              # Backend dependencies
+    ├── package-lock.json         # Dependency lock file
     ├── tools/                    # Automation tools
     │   └── web_automator.js      # Puppeteer automation logic
-    ├── index.js                  # Express server + AI integration
-    └── package.json              # Backend dependencies
+    └── uploads/                  # Upload directory
 ```
 
 ## Setup Instructions
